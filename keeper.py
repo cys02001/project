@@ -1,5 +1,19 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
-from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT,SDLK_LSHIFT, SDLK_a,SDLK_d,SDLK_w,delay,SDLK_q,SDLK_e
+from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, SDLK_LSHIFT, SDLK_a, \
+    SDLK_d, SDLK_w, delay, SDLK_q, SDLK_e
+
+import game_framework
+
+PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
+RUN_SPEED_KMPH = 20.0 # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
+
+FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
 # state event check
 # ( state event type, event value )
@@ -85,12 +99,13 @@ class Move:
     @staticmethod
     def do(keeper):
         keeper.frame = (keeper.frame + 1) % 1
-        keeper.x += keeper.dir * 5
+        keeper.frame = (keeper.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 1
+        keeper.x += keeper.dir * RUN_SPEED_PPS * game_framework.frame_time
         pass
 
     @staticmethod
     def draw(keeper):
-        keeper.image.clip_draw(keeper.frame * 33, 0, 20, 40, keeper.x, keeper.y,80,200)
+        keeper.image.clip_draw(int(keeper.frame) * 33, 0, 20, 40, keeper.x, keeper.y,80,200)
 
 
 class Jump_w:
@@ -282,6 +297,7 @@ class Keeper:
         self.image_ball = load_image('ball21x21.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+
 
     def update(self):
         self.state_machine.update()
