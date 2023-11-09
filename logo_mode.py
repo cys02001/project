@@ -14,6 +14,7 @@ def init():
     logo_start_time = get_time()
     pass
 
+
 def finish():
     global image
     del image
@@ -25,11 +26,13 @@ def update():
         logo_start_time = get_time()
         game_framework.change_mode(title_mode)
 
+
 def draw():
     clear_canvas()
-    image.draw(400,300)
+    image.draw(400, 300)
     update_canvas()
     pass
+
 
 def handle_events():
     events = get_events()

@@ -49,11 +49,12 @@ def draw():
     game_world.render()
     update_canvas()
 
+
 def pause():
     keeper.wait_time = 1000000000000000.0
     pass
 
+
 def resume():
     keeper.wait_time = get_time()
     pass
-

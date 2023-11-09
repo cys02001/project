@@ -21,7 +21,6 @@ def handle_events():
             keeper.handle_event(event)
 
 
-
 def create_world():
     global running
     global ground
