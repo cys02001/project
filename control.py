@@ -1,7 +1,7 @@
 from pico2d import *
 
-
-from ground import Background
+import game_world
+from ground import Ground
 from keeper import Keeper
 
 
@@ -21,44 +21,31 @@ def handle_events():
             keeper.handle_event(event)
 
 
-def reset_world():
+
+def create_world():
     global running
-    global background
+    global ground
     global team
-    global world
     global keeper
 
     running = True
-    world = []
 
-    background = Background()
-    world.append(background)
+    grass = Ground()
+    game_world.add_object(ground, 0)
 
     keeper = Keeper()
-    world.append(keeper)
-
-
-
-def update_world():
-    for o in world:
-        o.update()
-    pass
-
-
-def render_world():
-    clear_canvas()
-    for o in world:
-        o.draw()
-    update_canvas()
+    game_world.add_object(keeper, 1)
 
 
 open_canvas()
-reset_world()
+create_world()
 # game loop
 while running:
     handle_events()
-    update_world()
-    render_world()
+    game_world.update()
+    clear_canvas()
+    game_world.render()
+    update_canvas()
     delay(0.01)
 # finalization code
 close_canvas()
