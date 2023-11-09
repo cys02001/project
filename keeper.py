@@ -71,9 +71,9 @@ class Move:
     @staticmethod
     def enter(keeper, e):
         if right_down(e) or left_up(e):  # 오른쪽으로 Move
-            keeper.dir, keeper.face_dir= 1, 1
+            keeper.dir= 1
         elif left_down(e) or right_up(e):  # 왼쪽으로 Move
-            keeper.dir, keeper.face_dir= -1, -1
+            keeper.dir= -1
 
 
     @staticmethod
@@ -182,7 +182,9 @@ class Jump_a:
 
     @staticmethod
     def enter(keeper, e):
-        keeper.frame = 2
+        keeper.frame = 0
+        keeper.tries=0
+        print('1')
         keeper.wait_time = get_time()
         keeper.ignore_input = True
         pass
@@ -194,9 +196,10 @@ class Jump_a:
 
     @staticmethod
     def do(keeper):
-        keeper.frame = keeper.frame
-        keeper.x -= 1
-
+        if keeper.tries < 20:
+            keeper.frame = (keeper.frame + 1) % 4
+        keeper.x -= 0.1
+        keeper.tries += 1
         if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             keeper.state_machine.handle_event(('TIME_OUT', 0))
         pass
@@ -204,7 +207,7 @@ class Jump_a:
     @staticmethod
     def draw(keeper):
 
-        keeper.image_jump.clip_composite_draw(keeper.frame * 39, 0, 39, 60, 0, 'h', keeper.x, keeper.y + 100, 100, 400)
+        keeper.image_jump.clip_composite_draw(keeper.frame * 3, 0, 39, 60, 0, ' ', keeper.x, keeper.y + 100, 100, 400)
 
 
 class Jump_d:
@@ -271,7 +274,6 @@ class Keeper:
         self.x, self.y = 400, 300
         self.frame = 0
         self.dir = 0
-        self.face_dir = 1
         self.image = load_image('ai_keeper-removebg-preview.png')
         self.image_jump = load_image('ai_keeper-jump.png')
         self.state_machine = StateMachine(self)
