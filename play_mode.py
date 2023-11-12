@@ -5,6 +5,7 @@ import game_world
 import title_mode
 from ground import Ground
 from keeper import Keeper
+from kicker import Kicker
 
 
 # Game object class here
@@ -24,6 +25,7 @@ def init():
     global ground
     global team
     global keeper
+    global kicker
 
     running = True
 
@@ -32,6 +34,9 @@ def init():
 
     keeper = Keeper()
     game_world.add_object(keeper, 1)
+
+    kicker = Kicker()
+    game_world.add_object(kicker, 2)
 
 
 def finish():
@@ -52,9 +57,11 @@ def draw():
 
 def pause():
     keeper.wait_time = 1000000000000000.0
+    kicker.wait_time = 1000000000000000.0
     pass
 
 
 def resume():
     keeper.wait_time = get_time()
+    kicker.wait_time = get_time()
     pass

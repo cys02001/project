@@ -85,7 +85,7 @@ class Idle:
     @staticmethod
     def draw(keeper):
         keeper.image.clip_draw(keeper.frame * 20, 0, 20, 40, keeper.x, keeper.y, 80, 200)
-        keeper.image_kick.clip_draw(keeper.frame * 1, 0, 30, 80, 300, 0, 100, 200)  # 키커 임시로 띄우기
+        #keeper.image_kick.clip_draw(keeper.frame * 1, 0, 30, 80, 300, 0, 100, 200)  # 키커 임시로 띄우기
         keeper.image_ball.clip_draw(keeper.frame * 1, 0, 80, 80, 400, 20, 40, 40)  # 공 임시로 띄우기
 
 

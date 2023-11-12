@@ -3,7 +3,7 @@ from pico2d import *
 import game_world
 from ground import Ground
 from keeper import Keeper
-
+from kicker import Kicker
 
 # Game object class here
 
@@ -26,6 +26,7 @@ def create_world():
     global ground
     global team
     global keeper
+    global kicker
 
     running = True
 
@@ -34,6 +35,9 @@ def create_world():
 
     keeper = Keeper()
     game_world.add_object(keeper, 1)
+
+    kicker = Kicker()
+    game_world.add_object(kicker, 2)
 
 
 open_canvas()
