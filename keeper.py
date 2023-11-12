@@ -250,7 +250,7 @@ class Keeper:
         self.frame = 0
         self.dir = 0
         self.image = load_image('ai_keeper-removebg-preview.png')
-        self.image_jump = load_image('ai_keeper-jump.png')
+        self.image_jump = load_image('keeper-jump.png')
         self.image_kick = load_image('ai_kicker-removebg-preview.png')
         self.image_ball = load_image('ball21x21.png')
         self.state_machine = StateMachine(self)
