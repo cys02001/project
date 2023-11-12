@@ -131,14 +131,16 @@ class Jump_w:
     @staticmethod
     def do(keeper):
         keeper.frame = 1
-        keeper.y += 1
+        keeper.frame = (keeper.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)
+        keeper.y += RUN_SPEED_PPS * game_framework.frame_time
+
         if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             keeper.state_machine.handle_event(('TIME_OUT', 0))
         pass
 
     @staticmethod
     def draw(keeper):
-        keeper.image.clip_draw(keeper.frame * 22, 0, 20, 60, keeper.x, keeper.y, 80, 200)
+        keeper.image.clip_draw(int(keeper.frame) * 22, 0, 20, 60, keeper.x, keeper.y, 80, 200)
 
 
 class Jump_q:
