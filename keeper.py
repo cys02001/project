@@ -251,8 +251,25 @@ class Keeper:
         self.dir = 0
         self.image = load_image('ai_keeper-removebg-preview.png')
         self.image_jump = load_image('keeper-jump.png')
-        self.image_kick = load_image('ai_kicker-removebg-preview.png')
         self.image_ball = load_image('ball21x21.png')
+        self.state_machine = StateMachine(self)
+        self.state_machine.start()
+
+    def update(self):
+        self.state_machine.update()
+
+    def handle_event(self, event):
+        self.state_machine.handle_event(('INPUT', event))
+
+    def draw(self):
+        self.state_machine.draw()
+
+class Kicker:
+    def __init__(self):
+        self.x, self.y = 300, 0
+        self.frame = 0
+        self.dir = 0
+        self.image_kick = load_image('ai_kicker-removebg-preview.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
