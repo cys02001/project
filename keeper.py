@@ -120,19 +120,28 @@ class Jump_w:
     def enter(keeper, e):
         keeper.wait_time = get_time()
         keeper.ignore_input = True
+        keeper.is_jumping = True
         pass
 
     @staticmethod
     def exit(keeper, e):
         keeper.y = 300
         keeper.ignore_input = False
+        keeper.is_jumping = False
         pass
 
     @staticmethod
     def do(keeper):
         keeper.frame = 1
         keeper.frame = (keeper.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)
-        keeper.y += RUN_SPEED_PPS * game_framework.frame_time
+        if keeper.is_jumping:
+            if keeper.y < 400:  # 위로 점프 중
+                keeper.y += RUN_SPEED_PPS * game_framework.frame_time
+            else:  # 점프 높이에 도달하면 아래로 내려오도록 변경
+                keeper.is_jumping = False
+
+        if not keeper.is_jumping and keeper.y > 300:  # 점프가 끝났으면서 아직 땅에 닿지 않았을 때
+            keeper.y -= RUN_SPEED_PPS * game_framework.frame_time
 
         if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             keeper.state_machine.handle_event(('TIME_OUT', 0))
