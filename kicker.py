@@ -1,6 +1,5 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
-from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, SDLK_LSHIFT, SDLK_a, \
-    SDLK_d, SDLK_w, delay, SDLK_q, SDLK_e
+from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_d, delay
 import game_framework
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -18,25 +17,12 @@ FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 # state event check
 # ( state event type, event value )
 
-def right_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
-
-
-def right_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
-
-
-def left_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
-
-
-def left_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
-
-
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
+
+def d_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d
 
 def time_out(e):
     return e[0] == 'TIME_OUT'
@@ -48,7 +34,6 @@ class Idle:
 
     @staticmethod
     def enter(kicker, e):
-        kicker.dir = 0
         kicker.frame = 0
         pass
 
@@ -62,14 +47,44 @@ class Idle:
 
     @staticmethod
     def draw(kicker):
-        kicker.image_kick.clip_draw(kicker.frame * 1, 0, 30, 80, 300, 0, 100, 200)  # 키커 임시로 띄우기
+        kicker.image_kick.clip_draw(kicker.frame * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
+
+
+class Shooting:
+
+    @staticmethod
+    def enter(kicker, e):
+        print('1')
+        kicker.wait_time = get_time()
+        kicker.ignore_input = True
+        pass
+
+    @staticmethod
+    def exit(kicker, e):
+        kicker.y = 0
+        kicker.ignore_input = False
+        pass
+
+    @staticmethod
+    def do(kicker):
+        kicker.frame = kicker.frame = (kicker.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        kicker.x -= RUN_SPEED_PPS * game_framework.frame_time * 2
+
+        if get_time() - kicker.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
+            kicker.state_machine.handle_event(('TIME_OUT', 0))
+        pass
+
+    @staticmethod
+    def draw(kicker):
+        kicker.image_kick.clip_draw(int(kicker.frame) * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
 
 class StateMachine:
     def __init__(self, kicker):
         self.kicker = kicker
         self.cur_state = Idle
         self.transitions = {
-            Idle: {},
+            Idle: {d_down: Shooting},
+            Shooting: {time_out: Idle}
         }
 
     def start(self):
@@ -95,7 +110,6 @@ class Kicker:
     def __init__(self):
         self.x, self.y = 300, 0
         self.frame = 0
-        self.dir = 0
         self.image_kick = load_image('ai_kicker-removebg-preview.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
