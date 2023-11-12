@@ -212,77 +212,16 @@ class Jump_e:
         keeper.image_jump.clip_composite_draw(int(keeper.frame) * 39, 0, 39, 60, 0, 'h', keeper.x, keeper.y + 100, 100, 400)
 
 
-class Jump_a:
-
-    @staticmethod
-    def enter(keeper, e):
-        keeper.frame = 0
-        keeper.tries = 0
-        print('1')
-        keeper.wait_time = get_time()
-        keeper.ignore_input = True
-        pass
-
-    @staticmethod
-    def exit(keeper, e):
-        keeper.ignore_input = False
-        pass
-
-    @staticmethod
-    def do(keeper):
-        if keeper.tries < 20:
-            keeper.frame = (keeper.frame + 1) % 4
-        keeper.x -= 0.1
-        keeper.tries += 1
-        if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
-            keeper.state_machine.handle_event(('TIME_OUT', 0))
-        pass
-
-    @staticmethod
-    def draw(keeper):
-
-        keeper.image_jump.clip_composite_draw(keeper.frame * 3, 0, 39, 60, 0, ' ', keeper.x, keeper.y + 100, 100, 400)
-
-
-class Jump_d:
-
-    @staticmethod
-    def enter(keeper, e):
-        keeper.frame = 2
-        keeper.wait_time = get_time()
-        keeper.ignore_input = True
-        pass
-
-    @staticmethod
-    def exit(keeper, e):
-        keeper.ignore_input = False
-        pass
-
-    @staticmethod
-    def do(keeper):
-        keeper.frame = keeper.frame
-        keeper.x += 1
-
-        if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
-            keeper.state_machine.handle_event(('TIME_OUT', 0))
-        pass
-
-    @staticmethod
-    def draw(keeper):
-        keeper.image_jump.clip_composite_draw(keeper.frame * 39, 0, 39, 60, 0, 'h', keeper.x, keeper.y + 100, 100, 400)
-
-
 class StateMachine:
     def __init__(self, keeper):
         self.keeper = keeper
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down: Move, left_down: Move, left_up: Move, right_up: Move, w_down: Jump_w, q_down: Jump_q,
-                   e_down: Jump_e, a_down: Jump_a, d_down: Jump_d},
+                   e_down: Jump_e},
             Move: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, w_down: Jump_w, q_down: Jump_q,
-                   e_down: Jump_e, a_down: Jump_a, d_down: Jump_d},
-            Jump_q: {time_out: Idle}, Jump_e: {time_out: Idle}, Jump_w: {time_out: Idle}, Jump_a: {time_out: Idle},
-            Jump_d: {time_out: Idle}
+                   e_down: Jump_e},
+            Jump_q: {time_out: Idle}, Jump_e: {time_out: Idle}, Jump_w: {time_out: Idle}
         }
 
     def start(self):
