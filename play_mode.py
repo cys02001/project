@@ -18,6 +18,7 @@ def handle_events():
             game_framework.change_mode(title_mode)
         else:
             keeper.handle_event(event)
+            kicker.handle_event(event)
 
 
 def init():
