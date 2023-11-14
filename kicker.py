@@ -35,6 +35,7 @@ class Idle:
     @staticmethod
     def enter(kicker, e):
         kicker.frame = 0
+        print('1')
         pass
 
     @staticmethod
@@ -43,6 +44,7 @@ class Idle:
 
     @staticmethod
     def do(kicker):
+
         pass
 
     @staticmethod
@@ -54,21 +56,24 @@ class Shooting:
 
     @staticmethod
     def enter(kicker, e):
-        print('1')
         kicker.wait_time = get_time()
         kicker.ignore_input = True
         pass
 
     @staticmethod
     def exit(kicker, e):
+        kicker.x = 300
         kicker.y = 0
         kicker.ignore_input = False
+        kicker.frame = 0
         pass
 
     @staticmethod
     def do(kicker):
-        kicker.frame = kicker.frame = (kicker.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        kicker.x -= RUN_SPEED_PPS * game_framework.frame_time * 2
+        if kicker.frame <= 5:
+            kicker.frame = (kicker.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+            kicker.x += RUN_SPEED_PPS * game_framework.frame_time
+            kicker.y += RUN_SPEED_PPS * game_framework.frame_time
 
         if get_time() - kicker.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             kicker.state_machine.handle_event(('TIME_OUT', 0))
