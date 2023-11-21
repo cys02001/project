@@ -1,5 +1,7 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
-from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_d, delay
+from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_d, delay,draw_rectangle
+from ball import Ball
+import game_world
 import game_framework
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -127,3 +129,19 @@ class Kicker:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
+
+    def kick_ball(self):
+        pass
+
+    def get_bb(self):
+        return self.x - 30, self.y - 60, self.x + 30, self.y - 20
+
+    def handle_collision(self, group, other):
+        if group == 'kicker:ball':
+            print('2')
+
+
+
+
+

@@ -4,6 +4,7 @@ import game_world
 from ground import Ground
 from keeper import Keeper
 from kicker import Kicker
+from ball import Ball
 
 # Game object class here
 
@@ -19,6 +20,7 @@ def handle_events():
             running = False
         else:
             keeper.handle_event(event)
+            kicker.handle_event(event)
 
 
 def create_world():
@@ -27,6 +29,7 @@ def create_world():
     global team
     global keeper
     global kicker
+    global ball
 
     running = True
 
@@ -39,6 +42,8 @@ def create_world():
     kicker = Kicker()
     game_world.add_object(kicker, 2)
 
+    ball = Ball()
+    game_world.add_objects(ball, 3)
 
 open_canvas()
 create_world()

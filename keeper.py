@@ -80,8 +80,6 @@ class Idle:
     @staticmethod
     def draw(keeper):
         keeper.image.clip_draw(keeper.frame * 20, 0, 20, 40, keeper.x, keeper.y, 80, 200)
-        keeper.image_ball.clip_draw(keeper.frame * 1, 0, 80, 80, 400, 20, 40, 40)  # 공 임시로 띄우기
-
 
 class Move:
 
@@ -245,7 +243,6 @@ class Keeper:
         self.dir = 0
         self.image = load_image('ai_keeper-removebg-preview.png')
         self.image_jump = load_image('keeper-jump.png')
-        self.image_ball = load_image('ball21x21.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 

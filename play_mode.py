@@ -3,9 +3,11 @@ from pico2d import *
 import game_framework
 import game_world
 import title_mode
+import random
 from ground import Ground
 from keeper import Keeper
 from kicker import Kicker
+from ball import Ball
 
 
 # Game object class here
@@ -22,11 +24,10 @@ def handle_events():
 
 
 def init():
-    global running
     global ground
-    global team
     global keeper
     global kicker
+    global balls
 
     running = True
 
@@ -39,6 +40,12 @@ def init():
     kicker = Kicker()
     game_world.add_object(kicker, 2)
 
+    balls = [Ball(400, 20, 0) for _ in range(1)]
+    game_world.add_objects(balls, 1)
+
+    game_world.add_collision_pair('kicker:ball', kicker, None)
+    for ball in balls:
+        game_world.add_collision_pair('kicker:ball', None, ball)
 
 def finish():
     game_world.clear()
@@ -47,8 +54,7 @@ def finish():
 
 def update():
     game_world.update()
-    # delay(0.1)
-
+    game_world.handle_collisions()
 
 def draw():
     clear_canvas()
@@ -57,12 +63,8 @@ def draw():
 
 
 def pause():
-    keeper.wait_time = 1000000000000000.0
-    kicker.wait_time = 1000000000000000.0
     pass
 
 
 def resume():
-    keeper.wait_time = get_time()
-    kicker.wait_time = get_time()
     pass
