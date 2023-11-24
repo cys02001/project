@@ -1,8 +1,10 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
-from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_d, delay,draw_rectangle
-from ball import Ball
+from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_d, delay,draw_rectangle,\
+SDLK_1,SDLK_2,SDLK_3,SDLK_5
+# from ball import Ball
 import game_world
 import game_framework
+import play_mode
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -26,6 +28,30 @@ def space_down(e):
 def d_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d
 
+def num1_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_1
+
+def num1_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_1
+
+def num2_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_2
+
+def num2_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_2
+
+def num3_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_3
+
+def num3_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_3
+
+def num5_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_5
+
+def num5_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_5
+
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
@@ -37,7 +63,6 @@ class Idle:
     @staticmethod
     def enter(kicker, e):
         kicker.frame = 0
-        print('1')
         pass
 
     @staticmethod
@@ -52,6 +77,43 @@ class Idle:
     @staticmethod
     def draw(kicker):
         kicker.image_kick.clip_draw(kicker.frame * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
+        kicker.image_target.clip_draw(kicker.frame * 30, 0, 360, 360, kicker.target_x, kicker.target_y, 40, 40)
+
+
+class TargetMove:
+    @staticmethod
+    def enter(kicker, e):
+        if num3_down(e) or num1_up(e):  # 오른쪽으로 Move
+            kicker.dir = 1
+            kicker.value=True
+        elif num1_down(e) or num3_up(e):  # 왼쪽으로 Move
+            kicker.dir = -1
+            kicker.value=True
+        if num5_down(e) or num2_up(e):  # 위로 Move
+            kicker.updown = 1
+            kicker.value=False
+        elif num2_down(e) or num5_up(e):  # 아래로 Move
+            kicker.updown = -1
+            kicker.value=False
+        print('1111')
+        kicker.frame = 0
+
+    @staticmethod
+    def exit(kicker, e):
+        pass
+
+    @staticmethod
+    def do(kicker):
+        if kicker.value == True:
+            kicker.target_x += kicker.dir * RUN_SPEED_PPS * game_framework.frame_time
+        else:
+            kicker.target_y += kicker.updown * RUN_SPEED_PPS * game_framework.frame_time
+        pass
+
+    @staticmethod
+    def draw(kicker):
+        kicker.image_kick.clip_draw(kicker.frame * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
+        kicker.image_target.clip_draw(kicker.frame * 30,0,360,360,kicker.target_x,kicker.target_y,40,40)
 
 
 class Shooting:
@@ -68,6 +130,8 @@ class Shooting:
         kicker.y = 0
         kicker.ignore_input = False
         kicker.frame = 0
+        play_mode.ball.x=400
+        play_mode.ball.y=20
         pass
 
     @staticmethod
@@ -77,7 +141,7 @@ class Shooting:
             kicker.x += RUN_SPEED_PPS * game_framework.frame_time
             kicker.y += RUN_SPEED_PPS * game_framework.frame_time
 
-        if get_time() - kicker.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
+        if get_time() - kicker.wait_time > 3:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             kicker.state_machine.handle_event(('TIME_OUT', 0))
         pass
 
@@ -90,7 +154,10 @@ class StateMachine:
         self.kicker = kicker
         self.cur_state = Idle
         self.transitions = {
-            Idle: {d_down: Shooting},
+            Idle: {d_down: Shooting, num1_down: TargetMove, num2_down: TargetMove, num1_up: TargetMove,
+                   num2_up: TargetMove, num3_down: TargetMove, num5_down: TargetMove, num3_up: TargetMove, num5_up: TargetMove},
+            TargetMove: {num1_down: Idle, num2_down: Idle, num1_up: Idle, num2_up: Idle
+                   ,num3_down: Idle, num5_down: Idle,num3_up: Idle, num5_up: Idle, d_down:Shooting},
             Shooting: {time_out: Idle}
         }
 
@@ -113,11 +180,17 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.kicker)
 
+
 class Kicker:
     def __init__(self):
         self.x, self.y = 300, 0
         self.frame = 0
+        self.dir = 0
+        self.updown = 0
+        self.value = False
+        self.target_x,self.target_y=400,300
         self.image_kick = load_image('ai_kicker-removebg-preview.png')
+        self.image_target = load_image('target.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
@@ -130,9 +203,6 @@ class Kicker:
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())
-
-    def kick_ball(self):
-        pass
 
     def get_bb(self):
         return self.x - 30, self.y - 60, self.x + 30, self.y - 20

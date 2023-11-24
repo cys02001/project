@@ -1,7 +1,8 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, SDLK_LSHIFT, SDLK_a, \
-    SDLK_d, SDLK_w, delay, SDLK_q, SDLK_e
-
+    SDLK_d, SDLK_w, delay, SDLK_q, SDLK_e,draw_rectangle
+from ball import Ball
+import game_world
 import game_framework
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -254,3 +255,12 @@ class Keeper:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        return self.x - 30, self.y - 60, self.x + 30, self.y + 80
+
+    def handle_collision(self, group, other):
+        if group == 'keeper:ball':
+            print('block')
+            pass

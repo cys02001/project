@@ -27,6 +27,7 @@ def init():
     global ground
     global keeper
     global kicker
+    global ball
     global balls
 
     running = True
@@ -44,8 +45,10 @@ def init():
     game_world.add_objects(balls, 1)
 
     game_world.add_collision_pair('kicker:ball', kicker, None)
+    game_world.add_collision_pair('keeper:ball', keeper, None)
     for ball in balls:
         game_world.add_collision_pair('kicker:ball', None, ball)
+        game_world.add_collision_pair('keeper:ball', None, ball)
 
 def finish():
     game_world.clear()
