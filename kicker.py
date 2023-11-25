@@ -62,7 +62,10 @@ class Idle:
 
     @staticmethod
     def enter(kicker, e):
+        kicker.gauge_point_updown = True
         kicker.frame = 0
+        kicker.gauge_point_x=400
+        kicker.gauge_point_y=100
         pass
 
     @staticmethod
@@ -71,13 +74,27 @@ class Idle:
 
     @staticmethod
     def do(kicker):
+        if (kicker.gauge_point_x >= 200 and kicker.gauge_point_x <= 350) or ( kicker.gauge_point_x >= 450 and kicker.gauge_point_x <= 600):
+            kicker.gauge_type = 1
+        elif kicker.gauge_point_x> 350 and kicker.gauge_point_x < 450:
+            kicker.gauge_type = 2
 
+        if kicker.gauge_point_x>200 and kicker.gauge_point_updown == True:
+            kicker.gauge_point_x-=1
+            if kicker.gauge_point_x == 200:
+                kicker.gauge_point_updown = False
+        if kicker.gauge_point_x<600 and kicker.gauge_point_updown == False:
+            kicker.gauge_point_x+=1
+            if kicker.gauge_point_x == 600:
+                kicker.gauge_point_updown = True
         pass
 
     @staticmethod
     def draw(kicker):
         kicker.image_kick.clip_draw(kicker.frame * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
         kicker.image_target.clip_draw(kicker.frame * 30, 0, 360, 360, kicker.target_x, kicker.target_y, 40, 40)
+        kicker.image_gauge_bar.draw(400,100)
+        kicker.image_gauge_point.draw(kicker.gauge_point_x,kicker.gauge_point_y,5,15)
 
 
 class TargetMove:
@@ -191,6 +208,12 @@ class Kicker:
         self.target_x,self.target_y=400,300
         self.image_kick = load_image('ai_kicker-removebg-preview.png')
         self.image_target = load_image('target.png')
+        self.image_gauge_bar = load_image('gauge_bar.png')
+        self.image_gauge_point=load_image('gage_point.png')
+        self.image_gauge_point.x=400
+        self.image_gauge_point.y=100
+        self.image_gauge_point_updown = True
+        self.gauge_type=0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 

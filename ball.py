@@ -52,15 +52,23 @@ class Ball:
     def translate(self):
         global iscol
         move_speed=2
-        dx = play_mode.kicker.target_x - self.x
-        dy = play_mode.kicker.target_y - self.y
+        if play_mode.kicker.gauge_type == 2:
+            dx = play_mode.kicker.target_x - self.x
+            dy = play_mode.kicker.target_y - self.y
+
+        elif play_mode.kicker.gauge_type == 1:
+            dx = play_mode.kicker.target_x - self.x
+            dy = play_mode.kicker.target_y+100 - self.y
         dist = (dx ** 2 + dy ** 2) ** 0.5
 
         if dist > move_speed:
             self.x += dx / dist * move_speed
             self.y += dy / dist * move_speed
         else:
-            self.x, self.y = play_mode.kicker.target_x, play_mode.kicker.target_y
+            if play_mode.kicker.gauge_type == 2:
+                self.x, self.y = play_mode.kicker.target_x, play_mode.kicker.target_y
+            elif play_mode.kicker.gauge_type == 1:
+                self.x, self.y = play_mode.kicker.target_x, play_mode.kicker.target_y+100
             iscol=1
 
         return self.x, self.y
