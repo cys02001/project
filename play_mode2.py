@@ -3,7 +3,7 @@ from pico2d import *
 import game_framework
 import game_world
 import title_mode
-import play_mode2
+import play_mode
 import random
 from ground import Ground
 from keeper import Keeper
@@ -20,10 +20,10 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
-            game_framework.change_mode(play_mode2)
+            game_framework.change_mode(play_mode)
         else:
+            keeper.handle_event(event)
 
-            kicker.handle_event(event)
 
 
 def init():
@@ -44,7 +44,7 @@ def init():
     kicker = Kicker()
     game_world.add_object(kicker, 2)
 
-    balls = [Ball(400, 20, 0) for _ in range(1)]
+    balls = [Ball(600, 20, 0) for _ in range(1)]
     game_world.add_objects(balls, 1)
 
     game_world.add_collision_pair('kicker:ball', kicker, None)
