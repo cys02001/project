@@ -1,8 +1,6 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
-from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_d, delay,draw_rectangle,\
-SDLK_1,SDLK_2,SDLK_3,SDLK_5
-# from ball import Ball
-import game_world
+from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_d, draw_rectangle, \
+    SDLK_1, SDLK_2, SDLK_3, SDLK_5
 import game_framework
 import play_mode
 
@@ -28,32 +26,42 @@ def space_down(e):
 def d_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d
 
+
 def num1_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_1
+
 
 def num1_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_1
 
+
 def num2_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_2
+
 
 def num2_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_2
 
+
 def num3_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_3
+
 
 def num3_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_3
 
+
 def num5_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_5
+
 
 def num5_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_5
 
+
 def time_out(e):
     return e[0] == 'TIME_OUT'
+
 
 # time_out = lambda e : e[0] == 'TIME_OUT'
 
@@ -64,8 +72,8 @@ class Idle:
     def enter(kicker, e):
         kicker.gauge_point_updown = True
         kicker.frame = 0
-        kicker.gauge_point_x=400
-        kicker.gauge_point_y=100
+        kicker.gauge_point_x = 400
+        kicker.gauge_point_y = 100
         pass
 
     @staticmethod
@@ -74,17 +82,18 @@ class Idle:
 
     @staticmethod
     def do(kicker):
-        if (kicker.gauge_point_x >= 200 and kicker.gauge_point_x <= 350) or ( kicker.gauge_point_x >= 450 and kicker.gauge_point_x <= 600):
+        if (kicker.gauge_point_x >= 200 and kicker.gauge_point_x <= 350) or (
+                kicker.gauge_point_x >= 450 and kicker.gauge_point_x <= 600):
             kicker.gauge_type = 1
-        elif kicker.gauge_point_x> 350 and kicker.gauge_point_x < 450:
+        elif kicker.gauge_point_x > 350 and kicker.gauge_point_x < 450:
             kicker.gauge_type = 2
 
-        if kicker.gauge_point_x>200 and kicker.gauge_point_updown == True:
-            kicker.gauge_point_x-=1
+        if kicker.gauge_point_x > 200 and kicker.gauge_point_updown == True:
+            kicker.gauge_point_x -= 1
             if kicker.gauge_point_x == 200:
                 kicker.gauge_point_updown = False
-        if kicker.gauge_point_x<600 and kicker.gauge_point_updown == False:
-            kicker.gauge_point_x+=1
+        if kicker.gauge_point_x < 600 and kicker.gauge_point_updown == False:
+            kicker.gauge_point_x += 1
             if kicker.gauge_point_x == 600:
                 kicker.gauge_point_updown = True
         pass
@@ -93,8 +102,8 @@ class Idle:
     def draw(kicker):
         kicker.image_kick.clip_draw(kicker.frame * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
         kicker.image_target.clip_draw(kicker.frame * 30, 0, 360, 360, kicker.target_x, kicker.target_y, 40, 40)
-        kicker.image_gauge_bar.draw(400,100)
-        kicker.image_gauge_point.draw(kicker.gauge_point_x,kicker.gauge_point_y,5,15)
+        kicker.image_gauge_bar.draw(400, 100)
+        kicker.image_gauge_point.draw(kicker.gauge_point_x, kicker.gauge_point_y, 5, 15)
 
 
 class TargetMove:
@@ -102,16 +111,16 @@ class TargetMove:
     def enter(kicker, e):
         if num3_down(e) or num1_up(e):  # 오른쪽으로 Move
             kicker.dir = 1
-            kicker.value=True
+            kicker.value = True
         elif num1_down(e) or num3_up(e):  # 왼쪽으로 Move
             kicker.dir = -1
-            kicker.value=True
+            kicker.value = True
         if num5_down(e) or num2_up(e):  # 위로 Move
             kicker.updown = 1
-            kicker.value=False
+            kicker.value = False
         elif num2_down(e) or num5_up(e):  # 아래로 Move
             kicker.updown = -1
-            kicker.value=False
+            kicker.value = False
         print('1111')
         kicker.frame = 0
 
@@ -130,7 +139,7 @@ class TargetMove:
     @staticmethod
     def draw(kicker):
         kicker.image_kick.clip_draw(kicker.frame * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
-        kicker.image_target.clip_draw(kicker.frame * 30,0,360,360,kicker.target_x,kicker.target_y,40,40)
+        kicker.image_target.clip_draw(kicker.frame * 30, 0, 360, 360, kicker.target_x, kicker.target_y, 40, 40)
 
 
 class Shooting:
@@ -147,8 +156,8 @@ class Shooting:
         kicker.y = 0
         kicker.ignore_input = False
         kicker.frame = 0
-        play_mode.ball.x=400
-        play_mode.ball.y=20
+        play_mode.ball.x = 400
+        play_mode.ball.y = 20
         pass
 
     @staticmethod
@@ -166,15 +175,17 @@ class Shooting:
     def draw(kicker):
         kicker.image_kick.clip_draw(int(kicker.frame) * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
 
+
 class StateMachine:
     def __init__(self, kicker):
         self.kicker = kicker
         self.cur_state = Idle
         self.transitions = {
             Idle: {d_down: Shooting, num1_down: TargetMove, num2_down: TargetMove, num1_up: TargetMove,
-                   num2_up: TargetMove, num3_down: TargetMove, num5_down: TargetMove, num3_up: TargetMove, num5_up: TargetMove},
+                   num2_up: TargetMove, num3_down: TargetMove, num5_down: TargetMove, num3_up: TargetMove,
+                   num5_up: TargetMove},
             TargetMove: {num1_down: Idle, num2_down: Idle, num1_up: Idle, num2_up: Idle
-                   ,num3_down: Idle, num5_down: Idle,num3_up: Idle, num5_up: Idle, d_down:Shooting},
+                , num3_down: Idle, num5_down: Idle, num3_up: Idle, num5_up: Idle, d_down: Shooting},
             Shooting: {time_out: Idle}
         }
 
@@ -205,15 +216,15 @@ class Kicker:
         self.dir = 0
         self.updown = 0
         self.value = False
-        self.target_x,self.target_y=400,300
+        self.target_x, self.target_y = 400, 300
         self.image_kick = load_image('ai_kicker-removebg-preview.png')
         self.image_target = load_image('target.png')
         self.image_gauge_bar = load_image('gauge_bar.png')
-        self.image_gauge_point=load_image('gage_point.png')
-        self.image_gauge_point.x=400
-        self.image_gauge_point.y=100
+        self.image_gauge_point = load_image('gage_point.png')
+        self.image_gauge_point.x = 400
+        self.image_gauge_point.y = 100
         self.image_gauge_point_updown = True
-        self.gauge_type=0
+        self.gauge_type = 0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
@@ -233,8 +244,3 @@ class Kicker:
     def handle_collision(self, group, other):
         if group == 'kicker:ball':
             print('2')
-
-
-
-
-
