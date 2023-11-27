@@ -42,12 +42,19 @@ class Ball:
 
     def handle_collision(self, group, other):
         global iscol
+        isgoal = 1
         if group == 'kicker:ball':
             iscol = 2
         if group == 'keeper:ball':
             self.x = play_mode.keeper.x
-            self.y = play_mode.keeper.y
-            pass
+            self.y = play_mode.keeper.y+10
+            isgoal = 0
+        if group == 'ground:ball':
+            if isgoal == 1:
+                print('goal')
+
+
+
 
     def translate(self):
         global iscol

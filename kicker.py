@@ -82,6 +82,8 @@ class Idle:
 
     @staticmethod
     def do(kicker):
+        play_mode.ball.x=400
+        play_mode.ball.y=20
         if (kicker.gauge_point_x >= 200 and kicker.gauge_point_x <= 350) or (
                 kicker.gauge_point_x >= 450 and kicker.gauge_point_x <= 600):
             kicker.gauge_type = 1
@@ -96,7 +98,7 @@ class Idle:
             kicker.gauge_point_x += 1
             if kicker.gauge_point_x == 600:
                 kicker.gauge_point_updown = True
-        pass
+
 
     @staticmethod
     def draw(kicker):
