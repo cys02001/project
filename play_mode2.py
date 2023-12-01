@@ -7,7 +7,7 @@ import play_mode
 import random
 from ground import Ground
 from keeper import Keeper
-from kicker import Kicker
+from ai_kicker import Ai_Kicker
 from ball import Ball
 
 
@@ -23,13 +23,14 @@ def handle_events():
             game_framework.change_mode(play_mode)
         else:
             keeper.handle_event(event)
+            ai_kicker.handle_event(event)
 
 
 
 def init():
     global ground
     global keeper
-    global kicker
+    global ai_kicker
     global ball
     global balls
 
@@ -41,16 +42,16 @@ def init():
     keeper = Keeper()
     game_world.add_object(keeper, 1)
 
-    kicker = Kicker()
-    game_world.add_object(kicker, 2)
+    ai_kicker = Ai_Kicker()
+    game_world.add_object(ai_kicker, 2)
 
-    balls = [Ball(600, 20, 0) for _ in range(1)]
+    balls = [Ball(400, 20, 0) for _ in range(1)]
     game_world.add_objects(balls, 1)
 
-    game_world.add_collision_pair('kicker:ball', kicker, None)
+    game_world.add_collision_pair('ai_kicker:ball', ai_kicker, None)
     game_world.add_collision_pair('keeper:ball', keeper, None)
     for ball in balls:
-        game_world.add_collision_pair('kicker:ball', None, ball)
+        game_world.add_collision_pair('ai_kicker:ball', None, ball)
         game_world.add_collision_pair('keeper:ball', None, ball)
 
 def finish():

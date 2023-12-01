@@ -4,9 +4,8 @@ import game_framework
 import game_world
 import title_mode
 import play_mode2
-import random
 from ground import Ground
-from keeper import Keeper
+from ai_keeper import Ai_Keeper
 from kicker import Kicker
 from ball import Ball
 
@@ -19,16 +18,14 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
-            game_framework.change_mode(play_mode2)
         else:
-
             kicker.handle_event(event)
+            ai_keeper.handle_event(event)
 
 
 def init():
     global ground
-    global keeper
+    global ai_keeper
     global kicker
     global ball
     global balls
@@ -38,8 +35,8 @@ def init():
     ground = Ground()
     game_world.add_object(ground, 0)
 
-    keeper = Keeper()
-    game_world.add_object(keeper, 1)
+    ai_keeper = Ai_Keeper()
+    game_world.add_object(ai_keeper, 1)
 
     kicker = Kicker()
     game_world.add_object(kicker, 2)
@@ -48,11 +45,12 @@ def init():
     game_world.add_objects(balls, 1)
 
     game_world.add_collision_pair('kicker:ball', kicker, None)
-    game_world.add_collision_pair('keeper:ball', keeper, None)
+    game_world.add_collision_pair('ai_keeper:ball', ai_keeper, None)
+    game_world.add_collision_pair('ground:ball', ground, None)
     for ball in balls:
         game_world.add_collision_pair('kicker:ball', None, ball)
-        game_world.add_collision_pair('keeper:ball', None, ball)
-
+        game_world.add_collision_pair('ai_keeper:ball', None, ball)
+        game_world.add_collision_pair('ground:ball', None, ball)
 def finish():
     game_world.clear()
     pass

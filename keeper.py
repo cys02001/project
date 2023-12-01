@@ -1,9 +1,9 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, SDLK_LSHIFT, SDLK_a, \
     SDLK_d, SDLK_w, delay, SDLK_q, SDLK_e,draw_rectangle
-from ball import Ball
-import game_world
 import game_framework
+import play_mode
+import play_mode2
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -76,6 +76,8 @@ class Idle:
 
     @staticmethod
     def do(keeper):
+        play_mode.ball.x = 400
+        play_mode.ball.y = 20
         pass
 
     @staticmethod
@@ -97,6 +99,8 @@ class Move:
 
     @staticmethod
     def do(keeper):
+        play_mode.ball.x = 400
+        play_mode.ball.y = 20
         keeper.frame = (keeper.frame + 1) % 1
         keeper.frame = (keeper.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 1
         keeper.x += keeper.dir * RUN_SPEED_PPS * game_framework.frame_time

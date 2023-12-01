@@ -1,4 +1,4 @@
-objects = [[] for _ in range(4)]
+objects = [[] for _ in range(10)]
 
 # fill here
 

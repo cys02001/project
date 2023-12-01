@@ -5,6 +5,7 @@ from ground import Ground
 from keeper import Keeper
 from kicker import Kicker
 from ball import Ball
+from ai_keeper import Ai_Keeper
 
 # Game object class here
 
@@ -26,7 +27,6 @@ def handle_events():
 def create_world():
     global running
     global ground
-    global team
     global keeper
     global kicker
     global ball

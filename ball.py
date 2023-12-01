@@ -2,7 +2,7 @@ from pico2d import *
 import game_world
 import game_framework
 import play_mode
-from kicker import Kicker
+import play_mode2
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -42,16 +42,18 @@ class Ball:
 
     def handle_collision(self, group, other):
         global iscol
-        isgoal = 1
         if group == 'kicker:ball':
             iscol = 2
-        if group == 'keeper:ball':
-            self.x = play_mode.keeper.x
-            self.y = play_mode.keeper.y+10
-            isgoal = 0
+        if group == 'ai_kicker:ball':
+            iscol = 2
         if group == 'ground:ball':
-            if isgoal == 1:
-                print('goal')
+            if group == 'keeper:ball':
+                self.x = play_mode.keeper.x
+                self.y = play_mode.keeper.y + 10
+            elif group == 'ai_keeper:ball':
+                self.x = play_mode.ai_keeper.x
+                self.y = play_mode.ai_keeper.y + 10
+                pass
 
 
 
@@ -66,16 +68,30 @@ class Ball:
         elif play_mode.kicker.gauge_type == 1:
             dx = play_mode.kicker.target_x - self.x
             dy = play_mode.kicker.target_y + 100 - self.y
+
+        elif play_mode2.ai_kicker.gauge_type == 3:
+            dx = play_mode2.ai_kicker.target_x - self.x
+            dy = play_mode2.ai_kicker.target_y - self.y
+
+        else:
+            dx = 0
+            dy = 0
+
         dist = (dx ** 2 + dy ** 2) ** 0.5
 
         if dist > move_speed:
             self.x += dx / dist * move_speed
             self.y += dy / dist * move_speed
+
         else:
             if play_mode.kicker.gauge_type == 2:
                 self.x, self.y = play_mode.kicker.target_x, play_mode.kicker.target_y
+                iscol = 1
             elif play_mode.kicker.gauge_type == 1:
                 self.x, self.y = play_mode.kicker.target_x, play_mode.kicker.target_y + 100
-            iscol = 1
+                iscol = 1
+            elif play_mode2.ai_kicker.gauge_type == 3:
+                self.x, self.y = play_mode2.ai_kicker.target_x, play_mode2.ai_kicker.target_y
+                iscol = 1
 
         return self.x, self.y

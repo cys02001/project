@@ -3,6 +3,7 @@ from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDL
     SDLK_1, SDLK_2, SDLK_3, SDLK_5
 import game_framework
 import play_mode
+import play_mode2
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -123,7 +124,6 @@ class TargetMove:
         elif num2_down(e) or num5_up(e):  # 아래로 Move
             kicker.updown = -1
             kicker.value = False
-        print('1111')
         kicker.frame = 0
 
     @staticmethod
@@ -132,6 +132,8 @@ class TargetMove:
 
     @staticmethod
     def do(kicker):
+        play_mode.ball.x=400
+        play_mode.ball.y = 20
         if kicker.value == True:
             kicker.target_x += kicker.dir * RUN_SPEED_PPS * game_framework.frame_time
         else:
@@ -158,8 +160,10 @@ class Shooting:
         kicker.y = 0
         kicker.ignore_input = False
         kicker.frame = 0
+        game_framework.change_mode(play_mode2)
         play_mode.ball.x = 400
         play_mode.ball.y = 20
+        kicker.gauge_type = 0
         pass
 
     @staticmethod
