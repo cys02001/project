@@ -1,6 +1,6 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_d, draw_rectangle, \
-    SDLK_1, SDLK_2, SDLK_3, SDLK_5
+    SDLK_1, SDLK_2, SDLK_3, SDLK_5, delay
 import game_framework
 import play_mode
 import play_mode2
@@ -164,6 +164,10 @@ class Shooting:
         kicker.frame = 0
         if play_mode.ball.isgoal == 1:
             score.player_score += 1
+            kicker.image_success_reaction.draw_now(40,40,200,200)
+        else:
+            kicker.image_fail_reaction.draw_now(40, 40, 200, 200)
+        delay(0.5)
         play_mode.ball.isgoal = 0
         score.turn += 1
         game_framework.change_mode(play_mode2)
@@ -236,6 +240,8 @@ class Kicker:
         self.image_gauge_point.x = 400
         self.image_gauge_point.y = 100
         self.image_gauge_point_updown = True
+        self.image_success_reaction = load_image('success_reaction.png')
+        self.image_fail_reaction = load_image('fail_reaction.png')
         self.gauge_type = 0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
