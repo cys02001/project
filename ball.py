@@ -1,8 +1,8 @@
 from pico2d import *
 import game_world
-import game_framework
 import play_mode
 import play_mode2
+import score
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -20,8 +20,8 @@ iscol = 1
 
 class Ball:
     image = None
-
     def __init__(self, x=400, y=20, velocity=1):
+        self.isgoal = 0
         if Ball.image == None:
             Ball.image = load_image('ball21x21.png')
         self.x, self.y, self.velocity = x, y, velocity
@@ -42,17 +42,24 @@ class Ball:
 
     def handle_collision(self, group, other):
         global iscol
+
+
         if group == 'kicker:ball':
             iscol = 2
         if group == 'ai_kicker:ball':
             iscol = 2
         if group == 'ground:ball':
             if group == 'keeper:ball':
-                self.x = play_mode.keeper.x
-                self.y = play_mode.keeper.y + 10
-            elif group == 'ai_keeper:ball':
+                self.x = play_mode2.keeper.x
+                self.y = play_mode2.keeper.y + 10
+            else:
+                self.isgoal=1
+                pass
+            if group == 'ai_keeper:ball':
                 self.x = play_mode.ai_keeper.x
                 self.y = play_mode.ai_keeper.y + 10
+            else:
+                self.isgoal=1
                 pass
 
 

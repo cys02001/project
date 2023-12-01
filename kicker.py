@@ -4,6 +4,7 @@ from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDL
 import game_framework
 import play_mode
 import play_mode2
+import score
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -126,6 +127,7 @@ class TargetMove:
             kicker.value = False
         kicker.frame = 0
 
+
     @staticmethod
     def exit(kicker, e):
         pass
@@ -160,6 +162,10 @@ class Shooting:
         kicker.y = 0
         kicker.ignore_input = False
         kicker.frame = 0
+        if play_mode.ball.isgoal == 1:
+            score.player_score += 1
+        play_mode.ball.isgoal = 0
+        score.turn += 1
         game_framework.change_mode(play_mode2)
         play_mode.ball.x = 400
         play_mode.ball.y = 20
@@ -249,4 +255,4 @@ class Kicker:
 
     def handle_collision(self, group, other):
         if group == 'kicker:ball':
-            print('2')
+            pass

@@ -19,8 +19,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
-            game_framework.change_mode(play_mode)
+        # elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
+        #     game_framework.change_mode(play_mode)
         else:
             keeper.handle_event(event)
             ai_kicker.handle_event(event)
@@ -50,9 +50,11 @@ def init():
 
     game_world.add_collision_pair('ai_kicker:ball', ai_kicker, None)
     game_world.add_collision_pair('keeper:ball', keeper, None)
+    game_world.add_collision_pair('ground:ball', ground, None)
     for ball in balls:
         game_world.add_collision_pair('ai_kicker:ball', None, ball)
         game_world.add_collision_pair('keeper:ball', None, ball)
+        game_world.add_collision_pair('ground:ball', None, ball)
 
 def finish():
     game_world.clear()

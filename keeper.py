@@ -266,5 +266,4 @@ class Keeper:
 
     def handle_collision(self, group, other):
         if group == 'keeper:ball':
-            print('block')
             pass
