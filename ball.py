@@ -38,7 +38,7 @@ class Ball:
 
     def draw(self):
         self.image.draw(self.x, self.y, 40, 40)
-        draw_rectangle(*self.get_bb())
+
 
     def update(self):
         if iscol == 2:

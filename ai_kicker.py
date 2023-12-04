@@ -6,6 +6,7 @@ from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDL
 import game_framework
 import play_mode
 import play_mode2
+import result_mode
 import score
 import title_mode
 
@@ -129,16 +130,10 @@ class Shooting:
         if score.turn >= 5:
             if score.player_score<score.ai_score:
                 print('ai win')
-                score.turn = 0
-                score.player_score = 0
-                score.ai_score = 0
-                game_framework.change_mode(title_mode)
+                game_framework.change_mode(result_mode)
             elif score.player_score>score.ai_score:
                 print('player win')
-                score.turn = 0
-                score.player_score = 0
-                score.ai_score = 0
-                game_framework.change_mode(title_mode)
+                game_framework.change_mode(result_mode)
             elif score.player_score == score.ai_score:
                 game_framework.change_mode(play_mode)
         else:
@@ -209,7 +204,7 @@ class Ai_Kicker:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
+
 
     def get_bb(self):
         return self.x - 30, self.y - 60, self.x + 30, self.y - 20

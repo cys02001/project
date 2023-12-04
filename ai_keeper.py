@@ -250,7 +250,6 @@ class Ai_Keeper:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 10, self.y - 40, self.x + 20, self.y + 40
