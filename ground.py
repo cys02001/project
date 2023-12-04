@@ -1,15 +1,17 @@
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, load_music
 
 
 class Ground:
     def __init__(self):
         self.image = load_image('ground.png')
-       # self.image_score = load_image('score.png')
+        self.bgm = load_music('main_bgm.mp3')
+        self.bgm.set_volume(128)
+        self.bgm.repeat_play()
 
     def draw(self):
         self.image.draw(400, 300, 800, 600)
         draw_rectangle(*self.get_bb())
-       # self.image_score.draw(400,400,350,108)
+
 
     def update(self):
         pass

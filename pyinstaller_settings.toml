@@ -1,0 +1,17 @@
+# 메인 파일 이름을 지정하세요.
+main_file = 'main.py'# fill here
+
+# 데이타 파일들을 지정하세요.
+data_files = [
+    # fill here
+    'ai_keeper-removebg-preview.png', 'ball21x21.png', 'ai_kicker-removebg-preview.png',
+ 'fail.png','fail_reaction.png','gage_point.png','gauge_bar.png','ground.png',
+    'keeper-jump.png','score.png','success_reaction.png','target.png','title.png'
+
+]
+
+# 데이타가 들어있는 폴더들을 지정하세요.
+data_folders = [
+    # fill here
+]
+

@@ -1,16 +1,14 @@
 from sdl2 import SDL_KEYDOWN, SDLK_ESCAPE, SDL_QUIT, SDLK_SPACE
 
 import game_framework
-from pico2d import load_image, clear_canvas, update_canvas, get_events, get_time, load_music
+from pico2d import load_image, clear_canvas, update_canvas, get_events
 
-import game_world
-import play_mode
+import title_mode
 
 
 def init():
     global image
-    global bgm
-    image = load_image('title.png')
+    image = load_image('result.png')
 
 def finish():
     global image
@@ -37,4 +35,4 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
-            game_framework.change_mode(play_mode)
+            game_framework.change_mode(title_mode)

@@ -162,13 +162,17 @@ class Shooting:
         kicker.y = 0
         kicker.ignore_input = False
         kicker.frame = 0
+        if play_mode.ball.x == play_mode.ai_keeper.x and play_mode.ball.y == play_mode.ai_keeper.y + 10:
+            play_mode.ball.isgoal = 0
         if play_mode.ball.isgoal == 1:
             score.player_score += 1
+            play_mode.ball.shouting_sound.play(1)
             kicker.image_success_reaction.draw_now(40,40,200,200)
-        else:
+        elif play_mode.ball.isgoal == 0:
+            play_mode.ball.boo_sound.play(1)
             kicker.image_fail_reaction.draw_now(40, 40, 200, 200)
-        delay(0.5)
         play_mode.ball.isgoal = 0
+        delay(2)
         score.turn += 1
         game_framework.change_mode(play_mode2)
         play_mode.ball.x = 400

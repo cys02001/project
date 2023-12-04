@@ -89,9 +89,9 @@ class Move:
     @staticmethod
     def enter(keeper, e):
         if right_down(e) or left_up(e):  # 오른쪽으로 Move
-            keeper.dir = 1
+            keeper.dir = 0.5
         elif left_down(e) or right_up(e):  # 왼쪽으로 Move
-            keeper.dir = -1
+            keeper.dir = -0.5
 
     @staticmethod
     def exit(keeper, e):
@@ -168,7 +168,7 @@ class Jump_q:
     def do(keeper):
         if keeper.frame <=2:
             keeper.frame = keeper.frame = (keeper.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
-            keeper.x -= RUN_SPEED_PPS * game_framework.frame_time * 2
+            keeper.x -= RUN_SPEED_PPS * game_framework.frame_time * 4
 
         if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             keeper.state_machine.handle_event(('TIME_OUT', 0))
@@ -198,7 +198,7 @@ class Jump_e:
     def do(keeper):
         if keeper.frame <= 2:
             keeper.frame = keeper.frame = (keeper.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
-            keeper.x += RUN_SPEED_PPS * game_framework.frame_time * 2
+            keeper.x += RUN_SPEED_PPS * game_framework.frame_time * 4
 
         if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             keeper.state_machine.handle_event(('TIME_OUT', 0))
@@ -262,7 +262,7 @@ class Keeper:
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 10, self.y - 0, self.x + 20, self.y + 40
+        return self.x - 10, self.y - 40, self.x + 20, self.y + 40
 
     def handle_collision(self, group, other):
         if group == 'keeper:ball':

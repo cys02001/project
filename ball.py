@@ -20,11 +20,21 @@ iscol = 1
 
 class Ball:
     image = None
+    ball_kick_sound = None
+    shouting_sound=None
+    boo_sound=None
+
     def __init__(self, x=400, y=20, velocity=1):
         self.isgoal = 0
         if Ball.image == None:
             Ball.image = load_image('ball21x21.png')
         self.x, self.y, self.velocity = x, y, velocity
+        self.ball_kick_sound = load_music('ball_kick.mp3')
+        self.ball_kick_sound.set_volume(32)
+        self.shouting_sound = load_music('shouting.mp3')
+        self.shouting_sound.set_volume(32)
+        self.boo_sound = load_music('boo.mp3')
+        self.boo_sound.set_volume(32)
 
     def draw(self):
         self.image.draw(self.x, self.y, 40, 40)
@@ -42,25 +52,27 @@ class Ball:
 
     def handle_collision(self, group, other):
         global iscol
-
-
-        if group == 'kicker:ball':
-            iscol = 2
         if group == 'ai_kicker:ball':
             iscol = 2
+            self.isgoal = 0
+        if group == 'kicker:ball':
+            iscol = 2
+            self.isgoal = 0
+        if group == 'ai_keeper:ball':
+            self.x = play_mode.ai_keeper.x
+            self.y = play_mode.ai_keeper.y + 10
+            self.isgoal = 0
+            iscol = 1
+        if group == 'keeper:ball':
+            self.x = play_mode2.keeper.x
+            self.y = play_mode2.keeper.y + 10
+            self.isgoal = 0
+            iscol = 1
         if group == 'ground:ball':
-            if group == 'keeper:ball':
-                self.x = play_mode2.keeper.x
-                self.y = play_mode2.keeper.y + 10
-            else:
-                self.isgoal=1
-                pass
-            if group == 'ai_keeper:ball':
-                self.x = play_mode.ai_keeper.x
-                self.y = play_mode.ai_keeper.y + 10
-            else:
-                self.isgoal=1
-                pass
+            self.isgoal = 1
+
+
+
 
 
 
@@ -93,12 +105,18 @@ class Ball:
         else:
             if play_mode.kicker.gauge_type == 2:
                 self.x, self.y = play_mode.kicker.target_x, play_mode.kicker.target_y
+                if not (self.x > 170 and self.x < 630 and self.y > 290 and self.y < 480):
+                    self.isgoal=0
                 iscol = 1
             elif play_mode.kicker.gauge_type == 1:
                 self.x, self.y = play_mode.kicker.target_x, play_mode.kicker.target_y + 100
+                if not (self.x > 170 and self.x < 630 and self.y > 290 and self.y < 480):
+                    self.isgoal=0
                 iscol = 1
             elif play_mode2.ai_kicker.gauge_type == 3:
                 self.x, self.y = play_mode2.ai_kicker.target_x, play_mode2.ai_kicker.target_y
+                if not (self.x > 170 and self.x < 630 and self.y > 290 and self.y < 480):
+                    self.isgoal=0
                 iscol = 1
 
         return self.x, self.y
