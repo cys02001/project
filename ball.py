@@ -29,12 +29,12 @@ class Ball:
         if Ball.image == None:
             Ball.image = load_image('ball21x21.png')
         self.x, self.y, self.velocity = x, y, velocity
-        self.ball_kick_sound = load_music('ball_kick.mp3')
+        self.ball_kick_sound = load_wav('ball_kick.wav')
         self.ball_kick_sound.set_volume(32)
-        self.shouting_sound = load_music('shouting.mp3')
+        self.shouting_sound = load_wav('shouting.wav')
         self.shouting_sound.set_volume(32)
-        self.boo_sound = load_music('boo.mp3')
-        self.boo_sound.set_volume(32)
+        self.boo_sound = load_wav('boo.wav')
+        self.boo_sound.set_volume(48)
 
     def draw(self):
         self.image.draw(self.x, self.y, 40, 40)
@@ -53,9 +53,11 @@ class Ball:
     def handle_collision(self, group, other):
         global iscol
         if group == 'ai_kicker:ball':
+            self.ball_kick_sound.play()
             iscol = 2
             self.isgoal = 0
         if group == 'kicker:ball':
+            self.ball_kick_sound.play()
             iscol = 2
             self.isgoal = 0
         if group == 'ai_keeper:ball':

@@ -166,10 +166,10 @@ class Shooting:
             play_mode.ball.isgoal = 0
         if play_mode.ball.isgoal == 1:
             score.player_score += 1
-            play_mode.ball.shouting_sound.play(1)
+            play_mode.ball.shouting_sound.play()
             kicker.image_success_reaction.draw_now(40,40,200,200)
         elif play_mode.ball.isgoal == 0:
-            play_mode.ball.boo_sound.play(1)
+            play_mode.ball.boo_sound.play()
             kicker.image_fail_reaction.draw_now(40, 40, 200, 200)
         play_mode.ball.isgoal = 0
         delay(2)
