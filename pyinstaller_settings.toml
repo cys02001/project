@@ -6,8 +6,9 @@ data_files = [
     # fill here
     'ai_keeper-removebg-preview.png', 'ball21x21.png', 'ai_kicker-removebg-preview.png',
  'fail.png','fail_reaction.png','gage_point.png','gauge_bar.png','ground.png',
-    'keeper-jump.png','score.png','success_reaction.png','target.png','title.png'
-
+    'keeper-jump.png','score.png','success_reaction.png','target.png','title.png',
+    'result_background.png', 'main_bgm.mp3','ball_kick.wav','boo.wav','shouting.wav','ENCR10B.TTF',
+    'player_keeper.png', 'player_keeper-jump.png', 'player_kicker.png'
 ]
 
 # 데이타가 들어있는 폴더들을 지정하세요.

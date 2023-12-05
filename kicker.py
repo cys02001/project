@@ -105,7 +105,7 @@ class Idle:
     @staticmethod
     def draw(kicker):
         kicker.image_kick.clip_draw(kicker.frame * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
-        kicker.image_target.clip_draw(kicker.frame * 30, 0, 360, 360, kicker.target_x, kicker.target_y, 40, 40)
+        kicker.image_target.clip_draw(kicker.frame * 30, 0, 500, 500, kicker.target_x, kicker.target_y, 40, 40)
         kicker.image_gauge_bar.draw(400, 100)
         kicker.image_gauge_point.draw(kicker.gauge_point_x, kicker.gauge_point_y, 5, 15)
 
@@ -145,7 +145,7 @@ class TargetMove:
     @staticmethod
     def draw(kicker):
         kicker.image_kick.clip_draw(kicker.frame * 30, 0, 30, 80, kicker.x, kicker.y, 100, 200)
-        kicker.image_target.clip_draw(kicker.frame * 30, 0, 360, 360, kicker.target_x, kicker.target_y, 40, 40)
+        kicker.image_target.clip_draw(kicker.frame * 30, 0, 500, 500, kicker.target_x, kicker.target_y, 40, 40)
 
 
 class Shooting:
@@ -237,7 +237,7 @@ class Kicker:
         self.updown = 0
         self.value = False
         self.target_x, self.target_y = 400, 300
-        self.image_kick = load_image('ai_kicker-removebg-preview.png')
+        self.image_kick = load_image('player_kicker.png')
         self.image_target = load_image('target.png')
         self.image_gauge_bar = load_image('gauge_bar.png')
         self.image_gauge_point = load_image('gage_point.png')
@@ -258,6 +258,7 @@ class Kicker:
 
     def draw(self):
         self.state_machine.draw()
+
 
     def get_bb(self):
         return self.x - 30, self.y - 60, self.x + 30, self.y - 20

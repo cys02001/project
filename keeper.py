@@ -140,7 +140,7 @@ class Jump_w:
         if not keeper.is_jumping and keeper.y > 300:  # 점프가 끝났으면서 아직 땅에 닿지 않았을 때
             keeper.y -= RUN_SPEED_PPS * game_framework.frame_time
 
-        if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
+        if get_time() - keeper.wait_time > 3:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             keeper.state_machine.handle_event(('TIME_OUT', 0))
         pass
 
@@ -170,7 +170,7 @@ class Jump_q:
             keeper.frame = keeper.frame = (keeper.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
             keeper.x -= RUN_SPEED_PPS * game_framework.frame_time * 4
 
-        if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
+        if get_time() - keeper.wait_time > 3:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             keeper.state_machine.handle_event(('TIME_OUT', 0))
         pass
 
@@ -200,7 +200,7 @@ class Jump_e:
             keeper.frame = keeper.frame = (keeper.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
             keeper.x += RUN_SPEED_PPS * game_framework.frame_time * 4
 
-        if get_time() - keeper.wait_time > 1:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
+        if get_time() - keeper.wait_time > 3:  # 1초 경과 시 'TIME_OUT' 이벤트 생성
             keeper.state_machine.handle_event(('TIME_OUT', 0))
         pass
 
@@ -246,8 +246,8 @@ class Keeper:
         self.x, self.y = 400, 300
         self.frame = 0
         self.dir = 0
-        self.image = load_image('ai_keeper-removebg-preview.png')
-        self.image_jump = load_image('keeper-jump.png')
+        self.image = load_image('player_keeper.png')
+        self.image_jump = load_image('player_keeper-jump.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
@@ -259,10 +259,10 @@ class Keeper:
 
     def draw(self):
         self.state_machine.draw()
-
+        draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 10, self.y - 40, self.x + 20, self.y + 40
+        return self.x - 0, self.y - 0, self.x + 10, self.y + 20
 
     def handle_collision(self, group, other):
         if group == 'keeper:ball':

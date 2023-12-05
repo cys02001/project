@@ -250,9 +250,10 @@ class Ai_Keeper:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 10, self.y - 40, self.x + 20, self.y + 40
+        return self.x - 0, self.y - 0, self.x + 10, self.y + 20
 
     def handle_collision(self, group, other):
         if group == 'ai_keeper:ball':

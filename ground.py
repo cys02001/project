@@ -19,8 +19,8 @@ class Ground:
         self.score_image.draw(400,550,80,60)
         self.player_font.draw(380, 550, str(score.player_score), (0, 0, 0))
         self.ai_font.draw(410, 550, str(score.ai_score), (0, 0, 0))
-        self.player_font.draw(290, 550, 'Player', (0, 0, 255))
-        self.ai_font.draw(450, 550, 'Ai', (255, 0, 0))
+        self.player_font.draw(290, 550, 'Player', (255, 0, 0))
+        self.ai_font.draw(450, 550, 'Ai', (255, 255, 0))
 
 
 
