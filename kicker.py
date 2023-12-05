@@ -4,6 +4,7 @@ from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDL
 import game_framework
 import play_mode
 import play_mode2
+import result_mode
 import score
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -162,13 +163,21 @@ class Shooting:
         kicker.y = 0
         kicker.ignore_input = False
         kicker.frame = 0
-        if play_mode.ball.isgoal == 1:
+        if play_mode.ball.isgoal == 1 and play_mode.ball.isstop == 0:
             score.player_score += 1
             play_mode.ball.shouting_sound.play()
             kicker.image_success_reaction.draw_now(40,40,200,200)
         elif play_mode.ball.isgoal == 0:
             play_mode.ball.boo_sound.play()
             kicker.image_fail_reaction.draw_now(40, 40, 200, 200)
+        if score.turn == 4:
+            if score.player_score == 0 and score.ai_score >=2:
+                game_framework.change_mode(result_mode)
+            if score.player_score == 0 and score.ai_score >=3:
+                game_framework.change_mode(result_mode)
+            if score.player_score == 1 and score.ai_score> 2:
+                game_framework.change_mode(result_mode)
+
         play_mode.ball.isgoal = 0
         delay(2)
         score.turn += 1
@@ -259,7 +268,7 @@ class Kicker:
 
 
     def get_bb(self):
-        return self.x - 30, self.y - 60, self.x + 30, self.y - 20
+        return self.x - 30, self.y - 60, self.x + 50, self.y - 20
 
     def handle_collision(self, group, other):
         if group == 'kicker:ball':

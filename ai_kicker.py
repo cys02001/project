@@ -124,9 +124,11 @@ class Shooting:
         ai_kicker.target_y = 0
         play_mode2.ball.x = 400
         play_mode2.ball.y = 20
-        if play_mode2.ball.isgoal == 1:
+        if play_mode2.ball.isgoal == 1 and play_mode2.ball.isstop == 0:
             score.ai_score += 1
         play_mode2.ball.isgoal = 0
+        if score.turn ==4 and  score.player_score == 2 and score.ai_score == 4:
+            game_framework.change_mode(result_mode)
         if score.turn >= 5:
             if score.player_score<score.ai_score:
                 print('ai win')
@@ -207,7 +209,7 @@ class Ai_Kicker:
 
 
     def get_bb(self):
-        return self.x - 30, self.y - 60, self.x + 30, self.y - 20
+        return self.x - 30, self.y - 60, self.x + 50, self.y - 20
 
     def handle_collision(self, group, other):
         if group == 'ai_kicker:ball':

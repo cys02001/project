@@ -126,7 +126,7 @@ class Jump_w:
         ai_keeper.frame = (ai_keeper.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)
         if ai_keeper.is_jumping:
             if ai_keeper.y < 400:  # 위로 점프 중
-                ai_keeper.y += RUN_SPEED_PPS * game_framework.frame_time
+                ai_keeper.y += RUN_SPEED_PPS * game_framework.frame_time*2
             else:  # 점프 높이에 도달하면 아래로 내려오도록 변경
                 ai_keeper.is_jumping = False
 
@@ -253,7 +253,7 @@ class Ai_Keeper:
 
 
     def get_bb(self):
-        return self.x - 30, self.y + 10, self.x + 40, self.y + 90
+        return self.x -5, self.y + 15, self.x + 15, self.y + 35
 
     def handle_collision(self, group, other):
         if group == 'ai_keeper:ball':

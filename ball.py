@@ -28,6 +28,7 @@ class Ball:
 
     def __init__(self, x=400, y=20, velocity=1):
         self.isgoal = 0
+        self.isstop = 0
         if Ball.image == None:
             Ball.image = load_image('ball21x21.png')
         self.x, self.y, self.velocity = x, y, velocity
@@ -42,6 +43,7 @@ class Ball:
         self.image.draw(self.x, self.y, 40, 40)
 
 
+
     def update(self):
         if iscol == 2:
             self.x, self.y = Ball.translate(self)
@@ -50,7 +52,7 @@ class Ball:
 
     # fill here
     def get_bb(self):
-        return self.x - 20, self.y - 20, self.x + 20, self.y + 20
+        return self.x - 5, self.y - 5, self.x + 5, self.y + 5
 
     def handle_collision(self, group, other):
         global iscol
@@ -63,13 +65,15 @@ class Ball:
             iscol = 2
             self.isgoal = 0
         if group == 'ai_keeper:ball':
-            # self.x = play_mode.ai_keeper.x
-            # self.y = play_mode.ai_keeper.y + 10
+            self.x = play_mode.ai_keeper.x
+            self.y = play_mode.ai_keeper.y + 10
+            self.isstop = 1
             self.isgoal = 0
             iscol = 1
         if group == 'keeper:ball':
-            # self.x = play_mode2.keeper.x
-            # self.y = play_mode2.keeper.y + 10
+            self.x = play_mode2.keeper.x
+            self.y = play_mode2.keeper.y + 10
+            self.isstop=1
             self.isgoal = 0
             iscol = 1
         if group == 'ground:ball':
