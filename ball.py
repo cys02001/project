@@ -63,13 +63,13 @@ class Ball:
             iscol = 2
             self.isgoal = 0
         if group == 'ai_keeper:ball':
-            self.x = play_mode.ai_keeper.x
-            self.y = play_mode.ai_keeper.y + 10
+            # self.x = play_mode.ai_keeper.x
+            # self.y = play_mode.ai_keeper.y + 10
             self.isgoal = 0
             iscol = 1
         if group == 'keeper:ball':
-            self.x = play_mode2.keeper.x
-            self.y = play_mode2.keeper.y + 10
+            # self.x = play_mode2.keeper.x
+            # self.y = play_mode2.keeper.y + 10
             self.isgoal = 0
             iscol = 1
         if group == 'ground:ball':
@@ -83,7 +83,7 @@ class Ball:
 
     def translate(self):
         global iscol
-        move_speed = 4
+        move_speed = 2
         if play_mode.kicker.gauge_type == 2:
             dx = play_mode.kicker.target_x - self.x
             dy = play_mode.kicker.target_y - self.y
@@ -103,8 +103,8 @@ class Ball:
         dist = (dx ** 2 + dy ** 2) ** 0.5
 
         if dist > move_speed:
-            self.x += dx / dist * RUN_SPEED_PPS * game_framework.frame_time * move_speed
-            self.y += dy / dist * RUN_SPEED_PPS * game_framework.frame_time * move_speed
+            self.x += dx / dist * move_speed
+            self.y += dy / dist * move_speed
 
         else:
             if play_mode.kicker.gauge_type == 2:

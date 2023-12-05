@@ -162,8 +162,6 @@ class Shooting:
         kicker.y = 0
         kicker.ignore_input = False
         kicker.frame = 0
-        if play_mode.ball.x == play_mode.ai_keeper.x and play_mode.ball.y == play_mode.ai_keeper.y + 10:
-            play_mode.ball.isgoal = 0
         if play_mode.ball.isgoal == 1:
             score.player_score += 1
             play_mode.ball.shouting_sound.play()

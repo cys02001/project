@@ -259,10 +259,10 @@ class Keeper:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
+
 
     def get_bb(self):
-        return self.x - 0, self.y - 0, self.x + 10, self.y + 20
+        return self.x - 30, self.y + 10, self.x + 40, self.y + 90
 
     def handle_collision(self, group, other):
         if group == 'keeper:ball':

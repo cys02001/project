@@ -109,7 +109,7 @@ class Shooting:
         ai_kicker.wait_time = get_time()
         ai_kicker.ignore_input = True
         ai_kicker.target_x=random.randint(170,640)
-        ai_kicker.target_y=random.randint(280,470)
+        ai_kicker.target_y=random.randint(300,470)
         ai_kicker.gauge_type = 3
         pass
 
